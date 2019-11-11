@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!78 &1
+TagManager:
+  serializedVersion: 2
+  tags:
+  - Pickup
+  layers:
+  - Default
+  - TransparentFX
+  - Ignore Raycast
+  - 
+  - Water
+  - UI
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  m_SortingLayers:
+  - name: Background
+    uniqueID: 219807101
+    locked: 0
+  - name: Tiles Back
+    uniqueID: 2786053513
+    locked: 0
+  - name: Items
+    uniqueID: 1432992225
+    locked: 0
+  - name: Player
+    uniqueID: 2221082115
+    locked: 0
+  - name: Tiles Front
+    uniqueID: 2880676089
+    locked: 0
+  - name: Default
+    uniqueID: 0
+    locked: 0
