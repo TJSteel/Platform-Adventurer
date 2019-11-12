@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour {
     private bool jump = false;
     private bool crouch = false;
     private bool falling = false;
-
+ 
     // Start is called before the first frame update
     void Start() {
         itemCount = 0;

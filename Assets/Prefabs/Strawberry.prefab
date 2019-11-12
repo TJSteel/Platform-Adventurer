@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &1643875253339902166
+--- !u!1001 &566764215653115104
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -10,7 +10,7 @@ PrefabInstance:
     - target: {fileID: 3595986522786980510, guid: 731b4676ca4cc224db41fd83301df63a,
         type: 3}
       propertyPath: m_Name
-      value: Cherries
+      value: Strawberry
       objectReference: {fileID: 0}
     - target: {fileID: 3595986522786980497, guid: 731b4676ca4cc224db41fd83301df63a,
         type: 3}
@@ -71,7 +71,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -4570538037665054336, guid: 3d6be91968cb95546ac95aeff5e52f84,
+      objectReference: {fileID: 1775669009216684005, guid: a2c110585eb710b408972fbc3b96136d,
         type: 3}
     - target: {fileID: 3595986522786980496, guid: 731b4676ca4cc224db41fd83301df63a,
         type: 3}
@@ -82,6 +82,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 9100000, guid: 7242cd37dc090154d828cea27977da57, type: 2}
+      objectReference: {fileID: 9100000, guid: 9484c864140c7934c9deb8139fd5c288, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 731b4676ca4cc224db41fd83301df63a, type: 3}
