@@ -16,6 +16,7 @@ public class PlayerController : MonoBehaviour {
     private bool jump = false;
     private bool crouch = false;
     private bool falling = false;
+    private bool canDoubleJump = true;
  
     // Start is called before the first frame update
     void Start() {
@@ -33,8 +34,17 @@ public class PlayerController : MonoBehaviour {
         if(falling) animator.SetBool("IsJumping", false);
 
         if (Input.GetButtonDown("Jump")) {
-            jump = true;
-            animator.SetBool("IsJumping", true);
+            if (Mathf.Abs(rb2d.velocity.y) > 0.1){
+                if (canDoubleJump){
+                    jump = true;
+                    canDoubleJump = false;
+                    animator.SetBool("DoubleJump", true);
+                    animator.SetBool("IsJumping", true);
+                }
+            } else {
+                jump = true;
+                animator.SetBool("IsJumping", true);
+            }
         }
         if (Input.GetButtonDown("Crouch")) {
             crouch = true;
@@ -58,5 +68,10 @@ public class PlayerController : MonoBehaviour {
             itemCount++;
             
         }
+    }
+
+    public void OnLanded(){
+        canDoubleJump = true;
+        animator.SetBool("DoubleJump", false);    
     }
 }

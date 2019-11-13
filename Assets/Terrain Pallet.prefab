@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2262292788647919274}
   - component: {fileID: 6347208284037784857}
   m_Layer: 31
-  m_Name: Grass Platform Pallet
+  m_Name: Terrain Pallet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
