@@ -1,22 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
 
     public Text countText;
-    public CharacterController2D controller;
-    public float runSpeed = 40f;
+    public float runSpeed;
+    public float jumpForce;
     public Animator animator;
     public Rigidbody2D rb2d;
+    public float scaleModifier; // this is to convert the players scale into meters
+    public float moveAcceleration;
+    public GameObject leftFoot;
+    public GameObject rightFoot;
 
     private int itemCount;
     private float moveHorizontal = 0f;
     private bool jump = false;
-    private bool crouch = false;
     private bool falling = false;
     private bool canDoubleJump = true;
+    private bool facingRight = true;
+    private bool grounded = false;
  
     // Start is called before the first frame update
     void Start() {
@@ -25,16 +28,15 @@ public class PlayerController : MonoBehaviour {
 
     // Update is called once per frame
     void Update() {
+
+        // calculate animation effects
         countText.text = "Count: " + itemCount;
         moveHorizontal = Input.GetAxisRaw("Horizontal") * runSpeed;
-        falling = rb2d.velocity.y < -0.01;
 
-        animator.SetFloat("Speed", Mathf.Abs(moveHorizontal));
-        animator.SetBool("IsFalling", falling);
         if(falling) animator.SetBool("IsJumping", false);
 
         if (Input.GetButtonDown("Jump")) {
-            if (Mathf.Abs(rb2d.velocity.y) > 0.1){
+            if (!grounded) {
                 if (canDoubleJump){
                     jump = true;
                     canDoubleJump = false;
@@ -46,17 +48,33 @@ public class PlayerController : MonoBehaviour {
                 animator.SetBool("IsJumping", true);
             }
         }
-        if (Input.GetButtonDown("Crouch")) {
-            crouch = true;
-        } else if (Input.GetButtonUp("Crouch")) {
-            crouch = false;
-        }
+
+        animator.SetFloat("Speed", Mathf.Abs(moveHorizontal));
+        animator.SetBool("IsFalling", falling);
+        OrientPlayer();
     }
 
     // Fixed update is called just before calculating any physics
     private void FixedUpdate() {
-        controller.Move(moveHorizontal * Time.fixedDeltaTime, crouch, jump);
+        bool wasGrounded = grounded;
+        grounded = Grounded();
+        Vector2 velocity = new Vector2(rb2d.velocity.x, rb2d.velocity.y);
+
+        if (!wasGrounded && grounded && velocity.y <= 0) OnLanded();
+
+        falling = velocity.y < 0 && !grounded;
+        velocity.x += moveHorizontal * moveAcceleration * Time.fixedDeltaTime;
+        if (velocity.x > runSpeed * scaleModifier){
+            velocity.x = runSpeed * scaleModifier;
+        } else if (velocity.x < -runSpeed * scaleModifier){
+            velocity.x = -runSpeed * scaleModifier;
+        }
+        if (jump) {
+            velocity.y = jumpForce * scaleModifier;
+        }
+        rb2d.velocity = velocity;
         jump = false;
+        
     }
 
     //OnTriggerEnter2D is called whenever this object overlaps with a trigger collider.
@@ -66,12 +84,37 @@ public class PlayerController : MonoBehaviour {
         if (other.gameObject.CompareTag("Pickup")) {
             other.gameObject.SetActive(false);
             itemCount++;
-            
         }
     }
 
     public void OnLanded(){
         canDoubleJump = true;
-        animator.SetBool("DoubleJump", false);    
+        animator.SetBool("DoubleJump", false);
+        animator.SetBool("IsJumping", false);
+        animator.SetBool("IsFalling", false);
+    }
+
+    private void OrientPlayer()
+    {
+        if ((moveHorizontal > 0 && !facingRight) || (moveHorizontal < 0 && facingRight)){
+            facingRight = !facingRight;
+            Vector3 scale = transform.localScale;
+            scale.x *= -1;
+            transform.localScale = scale;
+        }
+    }
+
+    bool Grounded() {
+        // check left foot
+        Vector3 bottomPosition = leftFoot.transform.position;
+        // Debug.DrawRay(bottomPosition, Vector3.down * 0.1f, Color.red);
+        RaycastHit2D hit = Physics2D.Raycast(bottomPosition, Vector3.down, 0.1f);
+        if (hit.collider) return true;
+
+        // check right foot
+        bottomPosition = rightFoot.transform.position;
+        // Debug.DrawRay(bottomPosition, Vector3.down * 0.1f, Color.red);
+        hit = Physics2D.Raycast(bottomPosition, Vector3.down, 0.1f);
+        return hit.collider != null;
     }
 }
