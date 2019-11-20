@@ -30,7 +30,7 @@ public class PlayerController : MonoBehaviour {
     void Update() {
 
         // calculate animation effects
-        countText.text = "Count: " + itemCount + " isGrounded? " + grounded;
+        countText.text = "Count: " + itemCount;
         moveHorizontal = Input.GetAxisRaw("Horizontal") * runSpeed;
 
         if(falling) animator.SetBool("IsJumping", false);
@@ -107,11 +107,13 @@ public class PlayerController : MonoBehaviour {
     bool Grounded() {
         // check left foot
         Vector3 bottomPosition = leftFoot.transform.position;
-        Debug.DrawRay(bottomPosition, Vector3.down * 0.1f, Color.red);
+        // Debug.DrawRay(bottomPosition, Vector3.down * 0.1f, Color.red);
         RaycastHit2D hit = Physics2D.Raycast(bottomPosition, Vector3.down, 0.1f);
         if (hit.collider) return true;
+
+        // check right foot
         bottomPosition = rightFoot.transform.position;
-        Debug.DrawRay(bottomPosition, Vector3.down * 0.1f, Color.red);
+        // Debug.DrawRay(bottomPosition, Vector3.down * 0.1f, Color.red);
         hit = Physics2D.Raycast(bottomPosition, Vector3.down, 0.1f);
         return hit.collider != null;
     }
